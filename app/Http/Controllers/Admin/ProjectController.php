@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Type;
+use App\Models\Technology;
 
 class ProjectController extends Controller
 {
@@ -34,7 +35,9 @@ class ProjectController extends Controller
     {
         $types = Type::all();
 
-        return view('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -55,10 +58,13 @@ class ProjectController extends Controller
 
         }
 
+        if($request ->has('technologies')){
+            $new_project->technologies()->attach($form_data['technologies']);
+        }
         $validatedData = $request->validate([
             'title' => 'required|max:100|unique:projects',
             'content' => 'required',
-            'cover_image' => 'image|nullulable',
+            'cover_image' => 'image|nullable',
         ],
         [
             'title.required' => 'Il titolo è obbligatorio',

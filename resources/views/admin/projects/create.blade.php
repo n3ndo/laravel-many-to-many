@@ -20,7 +20,7 @@
                     @csrf
 
                     <label for="cover_image">Aggiungi un immagine</label>
-                    <input type="file" name="cover_image" id="cover_image" class="form-control" required @error('cover_image') is-invalid @enderror>
+                    <input type="file" name="cover_image" id="cover_image" class="form-control" @error('cover_image') is-invalid @enderror>
 
                 @error('cover_image')
                     <div class="alert alert-danger">{{ $message }}</div>
@@ -40,6 +40,21 @@
                         @foreach ($types as $type)
                             <option value="{{ $type->id }}">{{ $type->name }}</option>
                         @endforeach
+
+                    </select>
+
+                    <div class="my-3">
+                        <label for="technology_id" class="control-label">Seleziona Le Tecnologie</label>
+                        @foreach ($technologies as $technology)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="technology_id[]" id="technology-{{ $technology->id }}" value="{{ $technology->id }}" @checked(is_array(old('technologies')) && in_array($technology->id, old('technologies')))>
+                                <label class="form-check-label" for="technology_id">
+                                    {{ $technology->name }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                
 
                 <label for="content">Descrizione</label>
                 <textarea name="content" id="content" cols="100" rows="10" class="form-control" placeholder="Inserisci la descrizione del progetto"></textarea>
